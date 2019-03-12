@@ -1,5 +1,5 @@
-var repoOwner = process.argv.slice((2)[0])
-var repoName = process.argv.slice((2)[1])
+var repoOwner = process.argv[2]
+var repoName = process.argv[3]
 var request = require('request');
 var request2 = require('./secret');
 var fs = require('fs')
@@ -7,8 +7,6 @@ var fs = require('fs')
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
-
-
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
@@ -18,27 +16,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
   }
 
   request(options, function(err, res, body) {
-    //   cb(err, body);
-      var users = JSON.parse(body);
-        for (var user of users) {
-          cb(user.avatar_url, `./avatars/${user.login}.jpeg`)
-          
-        }
+    var users = JSON.parse(body)
+      for (var user of users) {
+      cb(user.avatar_url, `./avatars/${user.login}.jpeg`);
+      }
     }
-
   );
-
-
 }
-
-
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   var users = JSON.parse(result);
-//   for (var user of users) {
-//     console.log(user.avatar_url);
-//   }
-
-// });
 
 function downloadImageByURL(url, filePath) {
   var fs = require('fs');
@@ -60,4 +44,5 @@ function downloadImageByURL(url, filePath) {
 
 // console.log("Errors:", err);
 // console.log("Result:", result);
-getRepoContributors('jquery', 'jquery',downloadImageByURL)
+console.log(repoOwner, repoName);
+getRepoContributors(repoOwner, repoName, downloadImageByURL)
