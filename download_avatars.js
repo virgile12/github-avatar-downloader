@@ -1,4 +1,5 @@
-
+var repoOwner = process.argv.slice((2)[0])
+var repoName = process.argv.slice((2)[1])
 var request = require('request');
 var request2 = require('./secret');
 var fs = require('fs')
